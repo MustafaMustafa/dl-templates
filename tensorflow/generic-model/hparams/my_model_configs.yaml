@@ -7,6 +7,8 @@ default: &DEFAULT
   dataset_size: 7000
   batchsize: 16
   epochs: 100
+  augment_data: False
+  
 
   # add other default parameters here
 
