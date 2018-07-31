@@ -1,11 +1,10 @@
 __author__ = "Mustafa Mustafa"
 __email__  = "mmustafa@lbl.gov"
 
-from __future__ import print_function
 import os
 import tensorflow as tf
 from models.my_model import MyModel
-from data.tf_data_pipeline import get_tfrecords_dataset_input_fn
+from data.data_pipeline import get_tfrecords_dataset_input_fn
 from hparams.yparams import YParams
 
 def model_fn(features, labels, params, mode):
