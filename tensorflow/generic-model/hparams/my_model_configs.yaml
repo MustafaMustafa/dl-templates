@@ -12,9 +12,9 @@ default: &DEFAULT
 
   # add other default parameters here
 
-  train_data_files: ['/path/to/data/file_0.tfrecords',
-                     '/path/to/data/file_1.tfrecords']
-  valid_data_files: ['/path/to/data/file_2.tfrecords']
+  train_data_files: ['../data/mnist/train_sample.tfrecords']
+                      #'/path/to/data/file_1.tfrecords'] You can provide a list of tfrecords files
+  valid_data_files: ['../data/mnist/validation.tfrecords']
 
   experiment_dir: 'logs/default_dont_use'
 
