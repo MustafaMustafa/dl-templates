@@ -30,6 +30,10 @@ class MyModel(object):
     def build_graph(self):
         """ network """
 
+        #remove the following two lines after you implement your graph
+        print("MyModel.build_graph() is not implemented. No graph to work with!")
+        raise NotImplementedError
+
         # build network graph here
         # usage of variables scopes is highly encouraged
 
