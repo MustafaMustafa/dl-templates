@@ -14,13 +14,22 @@ def get_tfrecords_dataset_input_fn(filenames, batchsize, epochs, variable_scope,
         
     def parse_fn(example):
         "Parse TFExample records and perform data augmentation"
-        example_fmt = {'X': tf.FixedLenFeature([], tf.string, ""),
-                       'y': tf.FixedLenFeature([], tf.string, "")}
-        parsed = tf.parse_single_example(example, example_fmt)
+        example_fmt = {'height': tf.FixedLenFeature([], tf.int64),
+                       'width': tf.FixedLenFeature([], tf.int64),
+                       'depth': tf.FixedLenFeature([], tf.int64),
+                       'label': tf.FixedLenFeature([], tf.int64),
+                       'image_raw': tf.FixedLenFeature([], tf.string, "")}
+        parsed_record = tf.parse_single_example(example, example_fmt)
 
         # change to your data shapes!
-        X = tf.reshape(tf.decode_raw(parsed['X'], tf.float32), [256, 256, 100])
-        y = tf.reshape(tf.decode_raw(parsed['y'], tf.float32), [256, 256, 1])
+        height = tf.cast(parsed_record['height'], tf.int32)
+        width = tf.cast(parsed_record['width'], tf.int32)
+        depth = tf.cast(parsed_record['depth'], tf.int32)
+
+        X = tf.reshape(tf.decode_raw(parsed_record['image_raw'], tf.float32), [height, width, depth])
+        label = tf.cast(parsed_record['label'], tf.int32)
+
+        print(X.get_shape().as_list())
 
         # generic augmentation for images
         if augment is True:
@@ -30,24 +39,20 @@ def get_tfrecords_dataset_input_fn(filenames, batchsize, epochs, variable_scope,
             rot_k = np.random.choice([0, 1, 2, 3])
             if rot_k:
                 X = tf.image.rot90(X, k=rot_k)
-                y = tf.image.rot90(y, k=rot_k)
 
             # flipping
             if np.random.choice([0, 1]):
                 X = tf.image.flip_left_right(X)
-                y = tf.image.flip_left_right(y)
 
             if np.random.choice([0, 1]):
                 X = tf.image.flip_up_down(X)
-                y = tf.image.flip_up_down(y)
 
             if np.random.choice([0, 1]):
                 X = tf.image.transpose_image(X)
-                y = tf.image.transpose_image(y)
         else:
             print("Not augmenting data...")
         
-        return X, y
+        return X, label
 
     def input_fn():
         """ create input_fn for Estimator training
