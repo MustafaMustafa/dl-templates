@@ -1,7 +1,7 @@
 default: &DEFAULT
 
   data_format: 'channels_last'
-  input_shape: [None, 256, 256, 100]
+  input_shape: [None, 28, 28, 1]
 
   learning_rate: 1e-4
   dataset_size: 7000
