@@ -1,7 +1,7 @@
 #### Project code structure
 - `./models`: contains models classes  
 - `./hparams`: contains yparams wrapper and hyperparameter configuration files  
-- `./logs`: this directory is created upon running an en experiments, it contains model checkpoints  
+- `./logs`: this directory is created upon running an experiment, it contains model checkpoints  
 
   
 #### Training:
