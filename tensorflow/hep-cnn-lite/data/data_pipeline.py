@@ -14,7 +14,7 @@ def get_input_fn(filename, batchsize, epochs, variable_scope,
         data input function input_fn
         """
 
-    with h5py.File(filename) as _f:
+    with h5py.File(filename, mode='r') as _f:
         data_group = _f['all_events']
         features = np.expand_dims(data_group['hist'][:], axis=-1).astype(np.float32)
         labels = np.expand_dims(data_group['y'][:], axis=-1).astype(np.float32)
