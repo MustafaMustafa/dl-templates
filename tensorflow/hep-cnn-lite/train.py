@@ -16,10 +16,14 @@ def model_fn(features, labels, params, mode):
         model.define_loss(labels)
         model.define_optimizer()
 
+    with tf.variable_scope('eval_metrics') as _:
+        eval_metrics = {}
+        eval_metrics['acc'] = tf.metrics.accuracy(labels=labels, predictions=model.predictions)
+
     return tf.estimator.EstimatorSpec(predictions=model.predictions,
                                       loss=model.loss,
                                       train_op=model.optimizer,
-                                      eval_metric_ops=None,
+                                      eval_metric_ops=eval_metrics,
                                       mode=mode)
 def main(argv):
     """ Training loop """
