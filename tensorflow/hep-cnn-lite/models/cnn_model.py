@@ -48,7 +48,7 @@ class CNN_Model(object):
     def define_loss(self, labels):
         """ define loss """
 
-        with tf.name_scope('loss'):
+        with tf.name_scope('sigmoid_cross_entropy'):
             self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=labels, logits=self.logits))
 
     def define_optimizer(self):
