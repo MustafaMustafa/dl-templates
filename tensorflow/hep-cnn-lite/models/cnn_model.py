@@ -33,14 +33,14 @@ class CNN_Model(object):
                 _h = tf.layers.max_pooling2d(_h, **self._params.maxpool_args)
 
             if self._params.conv_dropout_rate:
-                _h = tf.layers.dropout(_h, rate=self._params.conv_dropout_rate)
+                _h = tf.layers.dropout(_h, rate=self._params.conv_dropout_rate, training=self._is_training)
             _h = tf.layers.flatten(_h)
 
             # Fully connected  layers
             for _u, _do in zip(self._params.fc_hidden_units, self._params.fc_dropout_rates):
                 _h = tf.layers.dense(_h, units=_u, activation=self._params.fc_activation)
                 if _do:
-                    _h = tf.layers.dropout(_h, rate=_do)
+                    _h = tf.layers.dropout(_h, rate=_do, training=self._is_training)
 
             # Ouptut layer
             self.logits = tf.layers.dense(_h, units=1)
