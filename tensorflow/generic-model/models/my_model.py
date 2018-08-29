@@ -43,7 +43,7 @@ class MyModel(object):
     def define_loss(self, labels):
         """ define loss """
 
-        with tf.name_scope('loss'):
+        with tf.name_scope('model_loss'):
             # example loss, change to yours
             self.loss = tf.reduce_mean(tf.losses.mean_squared_error(labels=labels, predictions=self.predictions))
 
