@@ -25,8 +25,6 @@ class CNN_Model(object):
         # Convolutional layers
         _h = self.input_x
 
-        print(type(self._params.conv_args))
-        print(self._params.conv_args)
         with tf.variable_scope('model'):
             for _fs in self._params.conv_filters:
                 _h = tf.layers.conv2d(_h, filters=_fs, **self._params.conv_args)
