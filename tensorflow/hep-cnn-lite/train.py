@@ -42,17 +42,19 @@ def main(argv):
 
     # create training data input pipeline
     train_input_fn, train_init_hook = get_input_fn(params.train_data_files,
+                                                   dataset_size=params.train_dataset_size,
                                                    batchsize=params.batchsize,
                                                    epochs=params.epochs,
                                                    variable_scope='train_data_pipeline')
 
-    max_steps = (params.dataset_size//params.batchsize)*params.epochs
+    max_steps = (params.train_dataset_size//params.batchsize)*params.epochs
     train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn,
                                         hooks=[train_init_hook],
                                         max_steps=max_steps)
 
     # create validation data input pipeline
     valid_input_fn, valid_init_hook = get_input_fn(params.valid_data_files,
+                                                   dataset_size=params.valid_dataset_size,
                                                    batchsize=params.batchsize,
                                                    epochs=params.epochs,
                                                    variable_scope='valid_data_pipeline')

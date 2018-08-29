@@ -6,7 +6,7 @@ import h5py
 import numpy as np
 from data.iterator_initializer_hook import DatasetIteratorInitializerHook
 
-def get_input_fn(filename, batchsize, epochs, variable_scope,
+def get_input_fn(filename, dataset_size, batchsize, epochs, variable_scope,
                  shuffle_buffer_size=128, augment=True):
     """ creates a tf.data.Dataset and feeds and augments data from an h5 file
 
@@ -16,8 +16,8 @@ def get_input_fn(filename, batchsize, epochs, variable_scope,
 
     with h5py.File(filename, mode='r') as _f:
         data_group = _f['all_events']
-        features = np.expand_dims(data_group['hist'][:], axis=-1).astype(np.float32)
-        labels = np.expand_dims(data_group['y'][:], axis=-1).astype(np.float32)
+        features = np.expand_dims(data_group['hist'][:dataset_size], axis=-1).astype(np.float32)
+        labels = np.expand_dims(data_group['y'][:dataset_size], axis=-1).astype(np.float32)
         _f.close()
 
     iterator_initializer_hook = DatasetIteratorInitializerHook()
