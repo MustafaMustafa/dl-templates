@@ -26,6 +26,7 @@ class MyModel(object):
         self.build_graph()
         self.loss = None
         self.optimizer = None
+        self.train_op = None
 
     def build_graph(self):
         """ network """
@@ -48,9 +49,14 @@ class MyModel(object):
             self.loss = tf.reduce_mean(tf.losses.mean_squared_error(labels=labels, predictions=self.predictions))
 
     def define_optimizer(self):
-        """ build optimizer op """
+        """ build optimizer """
 
         with tf.variable_scope('optimizer') as _:
             # example optimizer, change to yours
-            self.optimizer = tf.train.AdamOptimizer(self._params.learning_rate).\
-                                      minimize(self.loss, global_step=self.global_step)
+            self.optimizer = tf.train.AdamOptimizer(self._params.learning_rate)
+
+    def define_train_op(self):
+        """ build train_op """
+
+        with tf.variable_scope('train_op') as _:
+            self.train_op = self.optimizer.minimize(self.loss, global_step=self.global_step)

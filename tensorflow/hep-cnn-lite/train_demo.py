@@ -15,6 +15,7 @@ def model_fn(features, labels, params, mode):
         # loss and optimizer are not needed for inference
         model.define_loss(labels)
         model.define_optimizer()
+        model.define_train_op()
 
     with tf.variable_scope('eval_metrics') as _:
         eval_metrics = {}
@@ -23,7 +24,7 @@ def model_fn(features, labels, params, mode):
         eval_metrics['acc'] = tf.metrics.accuracy(labels=labels, predictions=predictions)
 
     return tf.estimator.EstimatorSpec(loss=model.loss,
-                                      train_op=model.optimizer,
+                                      train_op=model.train_op,
                                       eval_metric_ops=eval_metrics,
                                       mode=mode)
 def main(argv):
