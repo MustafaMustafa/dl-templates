@@ -3,6 +3,7 @@ import tensorflow as tf
 from models.cnn_model import CNN_Model
 from data.data_pipeline import get_input_fn
 from hparams.yparams import YParams
+from config_device import config_device
 
 def model_fn(features, labels, params, mode):
     """ Build graph and return EstimatorSpec """
@@ -38,7 +39,9 @@ def main(argv):
     params = YParams(os.path.abspath(argv[1]), argv[2])
 
     # build estimator
-    config = tf.estimator.RunConfig(save_checkpoints_secs=20) # TOO FREQUENT, JUST FOR DEMO, use defaults instead
+    session_config = config_device('KNL')
+    config = tf.estimator.RunConfig(session_config=session_config,
+                                    save_checkpoints_secs=200) # TOO FREQUENT, JUST FOR DEMO, use defaults instead
     estimator = tf.estimator.Estimator(model_fn=model_fn,
                                        model_dir=params.experiment_dir,
                                        config=config,
