@@ -18,10 +18,11 @@ def model_fn(features, labels, params, mode):
 
     with tf.variable_scope('eval_metrics') as _:
         eval_metrics = {}
-        eval_metrics['acc'] = tf.metrics.accuracy(labels=labels, predictions=model.predictions)
+        probs = tf.nn.sigmoid(model.logits)
+        predictions = tf.round(probs)
+        eval_metrics['acc'] = tf.metrics.accuracy(labels=labels, predictions=predictions)
 
-    return tf.estimator.EstimatorSpec(predictions=model.predictions,
-                                      loss=model.loss,
+    return tf.estimator.EstimatorSpec(loss=model.loss,
                                       train_op=model.optimizer,
                                       eval_metric_ops=eval_metrics,
                                       mode=mode)
@@ -62,6 +63,7 @@ def main(argv):
     eval_spec = tf.estimator.EvalSpec(input_fn=valid_input_fn, hooks=[valid_init_hook])
 
     # train
+    tf.logging.set_verbosity(tf.logging.INFO)
     tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+import numpy as np
 import tensorflow as tf
 
 # pylint: disable-msg=C0103
@@ -43,7 +44,7 @@ class CNN_Model(object):
             # Ouptut layer
             self.logits = tf.layers.dense(_h, units=1)
 
-        self.predictions = tf.sigmoid(self.logits)
+        print("Number of model parameters", np.sum([np.prod(v.shape) for v in tf.trainable_variables()]))
 
     def define_loss(self, labels):
         """ define loss """
