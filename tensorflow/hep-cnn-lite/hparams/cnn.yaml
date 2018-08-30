@@ -41,5 +41,5 @@ demo_single_node:
   valid_dataset_size: 64000
   train_data_files: '../data/train.h5'
   valid_data_files: '../data/valid.h5'
-  epochs: 16
+  epochs: 5
   experiment_dir: '../logs/demo_single_node'
