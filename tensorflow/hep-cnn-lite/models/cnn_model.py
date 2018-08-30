@@ -33,7 +33,8 @@ class CNN_Model(object):
                 _h = tf.layers.max_pooling2d(_h, **self._params.maxpool_args)
 
             if self._params.conv_dropout_rate:
-                _h = tf.layers.dropout(_h, rate=self._params.conv_dropout_rate, training=self._is_training)
+                _h = tf.layers.dropout(_h, rate=self._params.conv_dropout_rate,
+                                       training=self._is_training)
             _h = tf.layers.flatten(_h)
 
             # Fully connected  layers
@@ -51,7 +52,8 @@ class CNN_Model(object):
         """ define loss """
 
         with tf.name_scope('sigmoid_cross_entropy'):
-            self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=labels, logits=self.logits))
+            self.loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+                labels=labels, logits=self.logits))
 
     def define_optimizer(self):
         """ build optimizer """
