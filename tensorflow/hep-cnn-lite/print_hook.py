@@ -8,3 +8,7 @@ class PrintHook(tf.train.SessionRunHook):
     def after_create_session(self, session, coord):
         for v in tf.trainable_variables():
             print(session.run(v))
+
+    def end(self, session):
+        for v in tf.trainable_variables():
+            print(session.run(v))

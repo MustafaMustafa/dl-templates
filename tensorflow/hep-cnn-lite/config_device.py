@@ -9,7 +9,7 @@ def config_device(arch):
 
     # common
     os.environ["KMP_BLOCKTIME"] = "1"
-    os.environ["KMP_SETTINGS"] = "1"
+    #os.environ["KMP_SETTINGS"] = "1"
     # os.environ["KMP_AFFINITY"]= "granularity=fine,verbose,compact,1,0"
     os.environ["KMP_AFFINITY"]= "granularity=fine,compact,1,0"
 
