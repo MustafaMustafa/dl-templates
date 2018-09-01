@@ -5,6 +5,7 @@ from models.cnn_model import CNN_Model
 from data.data_pipeline import get_input_fn
 from hparams.yparams import YParams
 from config_device import config_device
+from print_hook import PrintHook
 
 def model_fn(features, labels, params, mode):
     """ Build graph and return EstimatorSpec """
@@ -71,9 +72,10 @@ def main(argv):
     # initialization of all workers when training is started with random weights or
     # restored from a checkpoint.
     bcast_hook = hvd.BroadcastGlobalVariablesHook(0)
+    print_hook = PrintHook()
 
     train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn,
-                                        hooks=[train_init_hook, bcast_hook],
+                                        hooks=[train_init_hook, bcast_hook, print_hook],
                                         max_steps=max_steps)
 
     # create validation data input pipeline
