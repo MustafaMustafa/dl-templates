@@ -40,14 +40,16 @@ def main(argv):
         exit()
 
     hvd.init()
-    print("Number of horovod ranks =", hvd.size())
+    rank0 = (hvd.rank() == 0)
+    if rank0:
+        print("Number of horovod ranks =", hvd.size())
 
     # load hyperparameters
-    params = YParams(os.path.abspath(argv[1]), argv[2])
+    params = YParams(os.path.abspath(argv[1]), argv[2], print_params=rank0)
 
     # build estimator
-	# Horovod: save checkpoints only on worker 0 to prevent other workers from corrupting them.
-    model_dir = params.experiment_dir if hvd.rank() == 0 else None
+    # Horovod: save checkpoints only on worker 0 to prevent other workers from corrupting them.
+    model_dir = params.experiment_dir if rank0 else None
 
     session_config = config_device('KNL')
     config = tf.estimator.RunConfig(session_config=session_config,
