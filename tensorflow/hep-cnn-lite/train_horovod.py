@@ -75,10 +75,9 @@ def main(argv):
     # initialization of all workers when training is started with random weights or
     # restored from a checkpoint.
     bcast_hook = hvd.BroadcastGlobalVariablesHook(0)
-    print_hook = PrintHook()
 
     train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn,
-                                        hooks=[train_init_hook, bcast_hook, print_hook],
+                                        hooks=[train_init_hook, bcast_hook],
                                         max_steps=max_steps)
 
     # create validation data input pipeline
