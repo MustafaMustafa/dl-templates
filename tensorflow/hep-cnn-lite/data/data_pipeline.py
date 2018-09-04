@@ -6,8 +6,14 @@ import h5py
 import numpy as np
 from data.iterator_initializer_hook import DatasetIteratorInitializerHook
 
+def shuffle(a, b, seed):
+    rand_state = np.random.RandomState(seed)
+    rand_state.shuffle(a)
+    rand_state.seed(seed)
+    rand_state.shuffle(b)
+
 def get_input_fn(filename, dataset_size, batchsize, epochs, variable_scope,
-                 shuffle_buffer_size=128, augment=True):
+                 shuffle_buffer_size=12800, rank=None):
     """ creates a tf.data.Dataset and feeds and augments data from an h5 file
 
     Returns:
@@ -18,6 +24,8 @@ def get_input_fn(filename, dataset_size, batchsize, epochs, variable_scope,
         data_group = _f['all_events']
         features = np.expand_dims(data_group['hist'][:dataset_size], axis=-1).astype(np.float32)
         labels = np.expand_dims(data_group['y'][:dataset_size], axis=-1).astype(np.float32)
+        if rank is not None:
+            shuffle(features, labels, seed=107+rank)
         _f.close()
 
     iterator_initializer_hook = DatasetIteratorInitializerHook()
