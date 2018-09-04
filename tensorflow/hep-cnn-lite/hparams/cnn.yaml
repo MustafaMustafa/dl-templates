@@ -43,3 +43,12 @@ demo_single_node:
   valid_data_files: '../data/valid.h5'
   epochs: 5
   experiment_dir: '../logs/demo_single_node'
+
+demo_multi_node:
+  <<: *DEFAULT
+  train_dataset_size: 128000
+  valid_dataset_size: 64000
+  train_data_files: '/global/cscratch1/sd/sfarrell/atlas-rpv-images/train.h5'
+  valid_data_files: '/global/cscratch1/sd/sfarrell/atlas-rpv-images/val.h5'
+  epochs: 3
+  experiment_dir: 'logs/multi_single_node'
