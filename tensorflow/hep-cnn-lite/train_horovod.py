@@ -64,20 +64,20 @@ def main(argv):
                                                    dataset_size=params.train_dataset_size,
                                                    batchsize=params.batchsize,
                                                    epochs=params.epochs,
-                                                   variable_scope='train_data_pipeline')
+                                                   variable_scope='train_data_pipeline',
+                                                   rank=hvd.rank())
 
     max_steps = (params.train_dataset_size//params.batchsize)*params.epochs
-    max_steps = max_steps/hvd.size()
+    max_steps = max_steps//hvd.size()
 
     # Horovod: BroadcastGlobalVariablesHook broadcasts initial variable states from
     # rank 0 to all other processes. This is necessary to ensure consistent
     # initialization of all workers when training is started with random weights or
     # restored from a checkpoint.
     bcast_hook = hvd.BroadcastGlobalVariablesHook(0)
-    print_hook = PrintHook()
 
     train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn,
-                                        hooks=[train_init_hook, bcast_hook, print_hook],
+                                        hooks=[train_init_hook, bcast_hook],
                                         max_steps=max_steps)
 
     # create validation data input pipeline
@@ -85,7 +85,8 @@ def main(argv):
                                                    dataset_size=params.valid_dataset_size,
                                                    batchsize=params.batchsize,
                                                    epochs=params.epochs,
-                                                   variable_scope='valid_data_pipeline')
+                                                   variable_scope='valid_data_pipeline',
+                                                   rank=-10)
 
     eval_spec = tf.estimator.EvalSpec(input_fn=valid_input_fn, hooks=[valid_init_hook])
 
