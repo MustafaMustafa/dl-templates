@@ -1,2 +1,0 @@
-ruamel.yaml
-tensorflow-gpu>=1.9.0
