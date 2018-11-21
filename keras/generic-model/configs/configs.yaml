@@ -1,0 +1,37 @@
+default: &DEFAULT
+
+  data_format: 'channels_first'
+  input_shape: [3, 256, 256]
+
+  
+  # example of architecture details
+  # encoder:
+  #     filters: [25, 50, 100]
+  #     kernels: [4, 4, 4]
+  #     pooling: 'max_pooling' #options: max_pooling, avg_pooling, or strided
+  #     batchnorm: False
+  #
+  # decoder:
+  #     filters: [50, 25, 1]
+  #     kernels: [4, 4, 4]
+  #     batchnorm: False
+
+  optimizer:
+    name: 'adam'
+    lr: 1e-4
+
+  batchsize: 16
+  epochs: 400
+
+  experiment_dir: 'logs/default_dont_use'
+
+  augment_data: True
+  train_data_size: 7000
+  valid_data_size: 500
+
+  train_data_files: ['train_file_1']
+  valid_data_files: ['valid_file_1']
+
+baseline:
+  <<: *DEFAULT
+  experiment_dir: 'logs/baseline'
